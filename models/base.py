@@ -12,6 +12,10 @@ class Base:
     def id(self):
         return self._id
 
+    @id.getter
+    def get_id(self):
+        return self._id
+    
     @id.setter
     def id(self, new_id):
         self._id = new_id
@@ -21,7 +25,12 @@ class Base:
         return f"{self.__class__.__name__}(id={self.id})"
 
     def to_json(self):
-        return json.dumps({'id': self.id, **self.__dict__})
+        # Exclude '_id' attribute from JSON output
+        json_dict = {'id': self.id}
+        for key, value in self.__dict__.items():
+            if key != '_id':
+                json_dict[key] = value
+        return json.dumps(json_dict)
 
     @classmethod
     def from_json(cls, json_str):
@@ -36,7 +45,7 @@ class Base:
     def update_json(self):
         try:
             all_instances_json = [obj.to_json() for obj in Base.instances.values()]
-            with open('instances.json', 'w') as f:
+            with open('person_info.json', 'w') as f:
                 json.dump(all_instances_json, f)
         except Exception as e:
             print(f"Error occurred while updating JSON file: {e}")

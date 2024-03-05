@@ -5,9 +5,9 @@ import json
 person1 = Person(1, "Alice", 30)
 person2 = Person(2, "Bob", 25)
 person3 = Person(3, "Charlie", 40)
-
+print(person1.__dict__.itemss())
 print(Base.instances.items())
-
+person1.id = 5
 def file_storage():
     try:
         person_info = []
